@@ -27,6 +27,7 @@ int main() {
     int from = 1;
     int to = 0;
     int weight = 10;
+    Intro(list);
 
     while (true) { //Because we're making a menu, I assume we need most of the code to loop
     if (help) {
