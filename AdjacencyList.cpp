@@ -35,3 +35,41 @@ void AdjacencyList::LoadCoordinates(std::string filename) {
         InsertVertex(id, y / 1000000.0, x / 1000000.0);
     }
 }
+
+
+void AdjacencyList::LoadGraph(std::string filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Could not open " << filename << std::endl;
+        return;
+    }
+    std::string line;
+    bool first = true;
+    while (std::getline(file, line)) {
+        if (line.empty() || line[0] != 'a') continue;   // skip comments
+        std::stringstream ss(line);
+        char type;
+        long long from, to;
+        double weight;
+        ss >> type >> from >> to >> weight;
+        InsertEdge(from, to, weight);
+
+        // A* needs its guess to never be bigger than the real distance.
+        // The file's lengths aren't exactly meters, so we find the smallest
+        // (road length / straight-line meters) ratio and multiply the guess by it.
+        double meters = Haversine(from, to);
+        if (meters > 0 && (first || weight / meters < scale)) {
+            scale = weight / meters;
+            first = false;
+        }
+    }
+}
+
+void AdjacencyList::DisplayHistory() {
+    if (history.empty()) {
+        std::cout << "No history yet." << std::endl;
+        return;
+    }
+    for (int i = 0; i < (int)history.size(); i++)
+        std::cout << i + 1 << ". " << history[i] << std::endl;
+}
