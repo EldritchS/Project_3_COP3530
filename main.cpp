@@ -22,45 +22,55 @@ void Parse(AdjacencyList& list){
 
 int main() {
     AdjacencyList list;
-    bool help = true;
-    //If we only use the one data set, we'll likely put the parsing of it here, if we want more we should add it to our graph obj.
-    int from = 1;
-    int to = 0;
-    int weight = 10;
     Intro(list);
 
-    while (true) { //Because we're making a menu, I assume we need most of the code to loop
-    if (help) {
-        //write whatever our menu will end up looking like.
-        cout << "1. Enter start Vertex" << endl;
-        cout << "2. Enter End Vertex" << endl;
-        cout << "3. Run Algorithms and compare" << endl;
-        cout << "4. Print History" << endl;
-        cout << "5. Exit" << endl;
-    }
+    long long from = -1;
+    long long to = -1;
 
-        cout << "Enter an input" << endl;
-        string input;
-        cin >> input;
-        else if (input == "1"){
+    while (true) {
+        std::cout << std::endl;
+        std::cout << "1. Enter start vertex" << std::endl;
+        std::cout << "2. Enter end vertex" << std::endl;
+        std::cout << "3. Run algorithms and compare" << std::endl;
+        std::cout << "4. Print history" << std::endl;
+        std::cout << "5. Run benchmark" << std::endl;
+        std::cout << "6. Exit" << std::endl;
+        std::cout << "Enter an input: ";
 
+        std::string input;
+        std::cin >> input;
+
+        if (input == "1" || input == "2") {
+            long long id;
+            std::cout << "Vertex ID (1 to " << list.VertexCount() << "): ";
+            std::cin >> id;
+            if (!list.HasVertex(id)) {
+                std::cout << "That vertex doesn't exist." << std::endl;
+                std::cin.clear();
+                std::cin.ignore(1000, '\n');
+            }
+            else if (input == "1") from = id;
+            else to = id;
         }
-        else if (input == "2"){
-
+        else if (input == "3") {
+            if (from == -1 || to == -1) std::cout << "Enter a start and end vertex first." << std::endl;
+            else list.Compare(from, to);
         }
-        else if (input == "3"){
-
+        else if (input == "4") {
+            list.DisplayHistory();
         }
-        else if (input == "4"){
-
+        else if (input == "5") {
+            int n;
+            std::cout << "How many random queries? ";
+            std::cin >> n;
+            if (n > 0) list.Bmark("results.csv", n);
         }
-        if (input == "5"){
+        else if (input == "6") {
             break;
         }
         else {
-            cout << "Invalid input, please try again." << endl;
+            std::cout << "Invalid input, please try again." << std::endl;
         }
-
     }
     return 0;
 }
