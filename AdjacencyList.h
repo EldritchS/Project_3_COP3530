@@ -7,26 +7,46 @@
 #include <iomanip>
 
 
-
-using namespace std;
-
-class AdjacencyList {
-
-private:
-    unordered_map<int, vector<pair<int,int>>> AdjList; // We do need this list, do we need any maps for indexes?
-    vector<string> PrevReSults; // So we can store results to display again in a history;
-
-
-public:
-
-
-    AdjacencyList();
-    void AddData(string filename); // So we can input all of our data, or are we going to hardcode it?
-    void InsertEdge(string from, string to, int weight); // Inserts a new Edge, creates nodes to store
-    void ASearch(int from, int to); // For our A* sort
-    void Dsearch(int from, int to); // For our Dijkstra implementation
-    void Bmark(string filename); // For testing purposes, maybe we can have it just output speed
-    void DisplayHistory(); // Will just print out the last 50 requests
+// One road going out of a verte
+struct Edge {
+    long long to;
+    double weight;
 };
 
+// What a search returns
+struct Result {
+    bool found = false;
+    double distance = -1;
+    int expanded; // how many vertices the algorithm looked at
+    double ms = 0; // how long it took
+    std::vector<long long> path;
+};
 
+Class AdjacencyList {
+private:
+    std::unordered_map<long long, std::vector<Edge>> Adjlist; //vertex -> roads out of it
+    std::unordered_map<long long, std::pair<double, double>> Coords;   // vertex -> (latitude, longitude)
+    std::vector<long long> vertices;                              // list of all vertex IDs
+    std::vector<std::string> history;                                  // past comparisons
+    int edgeCount = 0;
+    double scale = 1;   // converts meters into the graph's distance units (for A*)
+
+    public:
+    void LoadCoordinates(std::string filename); // .co file
+    void LoadGraph(std::string filename);  // .gr file
+    void InsertVertex(long long id, double lat, double lon);
+    void InsertEdge(long long from, long long to, double weight);
+    bool HasVertex(long long id);
+    int VertexCount();
+    int EdgeCount();
+
+    double Haversine(long long a, long long b); // straight-line distance in meters
+    Result Dsearch(long long from, long long to); // Dijkstra
+    Result ASearch(long long from, long long to); // A*
+
+    void Compare(long long from, long long to);
+    void Bmark(std::string filename, int queries);
+    void DisplayHistory();
+};
+
+}
