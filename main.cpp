@@ -42,7 +42,7 @@ int main() {
         cout << "Enter an input" << endl;
         string input;
         cin >> input;
-        else if (input == "1"){
+        if (input == "1"){
 
         }
         else if (input == "2"){
@@ -54,7 +54,7 @@ int main() {
         else if (input == "4"){
 
         }
-        if (input == "5"){
+        else if (input == "5"){
             break;
         }
         else {
