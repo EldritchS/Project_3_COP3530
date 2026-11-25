@@ -27,6 +27,10 @@ int main() {
     long long from = -1;
     long long to = -1;
 
+        cout << "Enter an input" << endl;
+        string input;
+        cin >> input;
+        if (input == "1"){
     while (true) {
         std::cout << std::endl;
         std::cout << "1. Enter start vertex" << std::endl;
@@ -65,6 +69,7 @@ int main() {
             std::cin >> n;
             if (n > 0) list.Bmark("results.csv", n);
         }
+        else if (input == "5"){
         else if (input == "6") {
             break;
         }
