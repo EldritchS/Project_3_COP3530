@@ -18,7 +18,8 @@ cout << "________________________________________" << endl << endl;
 }
 
 void Parse(AdjacencyList& list){
-
+list.LoadCoordinates("../data/synthetic_city.co");
+list.LoadGraph("../data/synthetic_city.gr");
 }
 
 int main() {
