@@ -41,3 +41,20 @@ Result AdjacencyList::Dsearch(long long from, long long to) {
             }
         }
     }
+
+
+    // Rebuild the path by walking backwards from the destination
+    if (result.found) {
+        long long v = to;
+        while (v != from) {
+            result.path.push_back(v);
+            v = prev[v];
+        }
+        result.path.push_back(from);
+        std::reverse(result.path.begin(), result.path.end());
+    }
+
+    auto end = std::chrono::steady_clock::now();
+    result.ms = std::chrono::duration<double, std::milli>(end - start).count();
+    return result;
+}
