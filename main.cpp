@@ -18,8 +18,26 @@ cout << "________________________________________" << endl << endl;
 }
 
 void Parse(AdjacencyList& list){
-list.LoadCoordinates("../data/synthetic_city.co");
-list.LoadGraph("../data/synthetic_city.gr");
+while (list.VertexCount() == 0) {
+        std::string coFile, grFile;
+        std::cout << "Enter the path to the coordinates file (.co): ";
+        std::getline(std::cin, coFile);
+        std::cout << "Enter the path to the roads file (.gr): ";
+        std::getline(std::cin, grFile);
+
+        list.LoadCoordinates(CleanPath(coFile));
+        list.LoadGraph(CleanPath(grFile));
+
+        if (list.VertexCount() == 0)
+            std::cout << "Nothing was loaded, please try again." << std::endl << std::endl;
+    }
+    std::cout << "Loaded " << list.VertexCount() << " vertices and " << list.EdgeCount() << " edges." << std::endl;
+}
+
+std::string CleanPath(std::string path) {
+    while (!path.empty() && (path.front() == '"' || path.front() == ' ')) path.erase(0, 1);
+    while (!path.empty() && (path.back() == '"' || path.back() == ' ' || path.back() == '\r')) path.pop_back();
+    return path;
 }
 
 int main() {
